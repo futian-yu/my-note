@@ -288,3 +288,5 @@ ClickHouse的集群由分片 ( Shard ) 组成，而每个分片又通过副本 (
 **04****小结**
 
 本文我们快速浏览了世界第三大Web流量分析平台Yandex.Metrica背后的支柱ClickHouse的核心特性和逻辑架构。通过对核心特性部分的展示，ClickHouse如此强悍的缘由已初见端倪，列式存储、向量化执行引擎和表引擎都是它的撒手锏。在架构设计部分，则进一步展示了ClickHouse的一些设计思路，例如Column、Field、Block和Cluster。了解这些设计思路，能够帮助我们更好地理解和使用ClickHouse。最后又从另外一个角度探讨了ClickHouse如此之快的秘诀。
+
+===测试提交
