@@ -75,4 +75,4 @@ public class SingletonDemo{
 
 原理解析：
 
-![](C:/Users/HP/Desktop/myNote/my-note/images/5.jpg)
+![](/images/5.jpg)
