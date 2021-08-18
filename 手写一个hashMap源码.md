@@ -17,7 +17,12 @@ public interface Map<K,V>{
 
 ```java
 package futian.yu.com
-
+/**
+ * 手写的代码比hashMap效率更低，为什么？
+ * 因为hasp的扩容做的非常好，我们这里初始化的table[]大小是15;存1000个元素都要分布在这15个数组下标下.
+ * 而我们知道，数组后面是链表存的，这就导致了链表一长，查询效率非常低.而hashMap用了链表转红黑树，效率更高
+ *
+ */
 public class HashMap<K,V> implements Map<K,V>{
     Entry<K,V> table[] = null;
     int size = 0;
