@@ -27,7 +27,7 @@ spring boot 启动会扫描以下位置的application.properties或者applicatio
 
 即如下图所示：
 
-
+![](./images/8.jpg)
 
 以上是按照优先级从高到低(1-4)的顺序，所有位置的文件都会被加载，高优先级配置内容会覆盖低优先级配置内容。
 

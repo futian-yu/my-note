@@ -13,7 +13,7 @@ kill -9 8001	#杀死进程号PID为8001的进程
 esc+:+wq #保存并退出,若想不保存推出,esc + : + q!
 cp a.txt b.txt  #在当前文件夹下将a.txt复制一份并重命名为b.txt
 mv a.txt b.txt	#将a.txt重命名为b.txt
-
+find . -name yufutian.txt #全局查找文件名为a.txt的文件的路径,若*futian*也可模糊匹配
 
 
 ##===================快捷键
