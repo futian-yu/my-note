@@ -58,9 +58,9 @@
 
 
 
+7.hashSet的底层是什么？
 
-
-
+​	hashSet的底层就是hashMap，--》那hashMap是键值对，为什么new HashSet<>().add("a")，只有一个变量呢？-----》答：因为HashSet只关心key，至于value都是给的一个同样的默认值new Object();
 
 
 
