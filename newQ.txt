@@ -1,0 +1,26 @@
+· 知道你的项目到底是做什么的，有哪些功能。
+
+· 知道你做的项目在整个项目中所处的位置及作用，并能清晰地阐述模块间的调用关系。
+
+· 知道你项目的整体架构和使用到的中间件，并对中间件的原理有一定的了解。
+
+· 能流畅地阐述自己在项目中解决过的比较复杂的问题。
+
+1.接口和抽象类的区别.
+2.栈和队列的区别
+3.Int和Integer的区别和自动拆箱/装箱的相关问题
+https://www.cnblogs.com/dolphin0520/p/3780005.html
+4.常量池相关问题.   -->配合作用域问. String str = new String("abc");  str = "abc";
+5.你用过HashMap吗？说说HashMap的底层原理？你为什么用到它？(https://blog.csdn.net/baidu_28068985/article/details/78529246)
+6.当两个对象的hashcode相同会发生什么?这时如何获取值对象？
+7.HashMap默认负载因子和大小是多少？如果HashMap的大小超过了负载因子(load factor)定义的容量，会怎样？
+8.你了解重新调整HashMap大小存在什么问题吗？
+9.我们可以使用自定义的对象作为键吗？
+10.HashSet、HashTable、LinkedHashMap、ConcurrentHashMap与HashMap区别？
+11.讲讲ConcurrentHashMap底层原理？
+12.说说ArrayList、Map、Set底层原理，它们线程安全吗？要是线程不安全该如何解决呢？Vector、Collections. 、集合不安全之写时修改异常
+13.jdk1.7版本和1.8版本的HashMap的区别? **
+14.HashMap能不能排序？HashMap的长度为什么要是2的幂次方？
+答：为了减少Hash碰撞，尽量使Hash算法的结果均匀分布. index = hashCode("hangzhou") & (Length - 1) ;index做与运算时，例如Length若为9,length-1为1000,此时hashCode不管为多少，index都为8或0，有些甚至根本不会出现，反观2的n次方，尽可能的实现了hashCode&(length-1)后的随机性.
+15.创建线程的几种方式？Wait，sleep分别是谁的方法，区别？线程间的通信方式？
+16.介绍下什么是死锁，遇见过死锁吗？你是怎么排查的。（可以通过jps排查）（https://www.jianshu.com/p/e9de87bc2906）
