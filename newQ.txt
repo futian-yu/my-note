@@ -40,3 +40,7 @@ https://www.cnblogs.com/dolphin0520/p/3780005.html
 30.OutOfMemeryError这个错误你遇到过吗？你是怎么解决处理的？
 31.JVM调优有哪些参数，介绍下，线上环境上，你是怎么查看JVM的参数并进行调优的？
 32.能不能自己写一个类叫java.lang.String（类加载的过程，双亲委派模型）
+33.Spring用了哪些设计模式？Spring注入bean的方式？对SpringIOC和SpringAOP的理解？
+34.Spring事务隔离级别和传播机制？
+35.Mybatis的缓存机制（一级缓存和二级缓存），Mybatis的mapper文件中#和$的区别?
+35.SpringMVC的流程?
