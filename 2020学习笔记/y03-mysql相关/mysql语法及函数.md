@@ -163,13 +163,46 @@ SQL> select
 | 上海   | 1080       | 12000km |
 | 广州   | 2123       | 18000km |
 
-
 先以region把返回记录分成多个组，这就是GROUP BY的字面含义。分完组后，然后用聚合函数对每组中的不同字段(一或多条记录)作运算。
 [总人口数](https://www.baidu.com/s?wd=总人口数&tn=44039180_cpr&fenlei=mv6quAkxTZn0IZRqIHckPjm4nH00T1Y3nWn4nWDsrjuhrHFWm1--0ZwV5Hcvrjm3rH6sPfKWUMw85HfYnjn4nH6sgvPsT6KdThsqpZwYTjCEQLGCpyw9Uz4Bmy-bIi4WUvYETgN-TLwGUv3EnHm3rHbkPWDd)
 
+- **group by 用法记录**
 
+  ```sql
+  -- 脚本
+  CREATE TABLE `employee` (
+    `id` int NOT NULL,
+    `name` varchar(20) DEFAULT NULL,
+    `salary` int DEFAULT NULL,
+    `departmentid` int DEFAULT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  
+  INSERT INTO `employee`(`id`, `name`, `salary`, `departmentid`) VALUES (1, 'Joe', 70000, 1);
+  INSERT INTO `employee`(`id`, `name`, `salary`, `departmentid`) VALUES (2, 'Henry', 80000, 2);
+  INSERT INTO `employee`(`id`, `name`, `salary`, `departmentid`) VALUES (3, 'Sam', 60000, 2);
+  INSERT INTO `employee`(`id`, `name`, `salary`, `departmentid`) VALUES (4, 'Max', 90000, 1);
+  INSERT INTO `employee`(`id`, `name`, `salary`, `departmentid`) VALUES (5, 'JIM', 90000, 1);
+  select * from EMPLOYEE;
+  
+  -- 起因：想查询各个部门最大工资以及最高工资所对应人的名字
+  
+  -- 经过：所写的sql如下，最大值是统计出来了，但是name是错的。(其实查询非group by中的字段，mysql版本低一点还会报错)
+  
+  SELECT name,departmentid,max(salary) 
+        FROM EMPLOYEE
+        GROUP BY departmentid;
+  			
+  -- 总结及解决：group只是用来做分组用的，select查询的字段只能是group by 的字段以及聚合函数，否则编译器无法确定非分组字段选择哪个。
+  -- 查询所有部门中最大工资可以用其他方式查询.
+  select * from EMPLOYEE where salary = (select max(salary) from employee);
+  
+  -- 查询每个部门中最大工资以及拿最高工资的人的姓名
+  select e.name,p.departmentid,p.salary from (select departmentid,max(salary) salary from employee group by departmentid) p left join employee e
+   on e.salary = p.salary
+  ```
 
-
+  
 
 三） 查询每个部门的每种职位的雇员数。select deptno,job,count(*) from emp group by deptno,job。
 
@@ -327,7 +360,7 @@ SELECT
         CONVERSION_PAYMENT_AMOUNT != 0
 ```
 
-8.**使用case when批量更新
+8.**使用case when批量更新**
 
 ```sql
 **
