@@ -26,7 +26,7 @@
 
 
 
-5.CAS的缺点
+**5.CAS的缺点**
 
 1)循环时间长，开销大。如果CAS失败，会一直进行尝试。如果CAS长时间一直不成功，可能会给CPU带来很大的开销。
 
@@ -36,13 +36,13 @@
 
 
 
-6.CAS问题连环炮：CAS ---> Unsafe ---> CAS底层思想 ---> ABA问题 ---> 原子引用更行 ---> 如何规避ABA问题？
+**6.CAS问题连环炮：**CAS ---> Unsafe ---> CAS底层思想 ---> ABA问题 ---> 原子引用更行 ---> 如何规避ABA问题？
 
-7.什么是ABA问题？
+**7.什么是ABA问题？**
 
 ​	但凡问到CAS，必须得知道其中有ABA问题，否则面试官认为你只会用，浮于表面。CAS是指取出内存中某时刻的数据并在当下时刻比较并交换，那么在取出直至比较的这个时间段内，内存里的值可能被其他线程由A->B->...->A,然后这个时候CAS的线程比较成功并交换。这时尽管CAS操作成功，但不代表这个过程没问题。
 
-8.什么是原子引用更新?
+**8.什么是原子引用更新?**
 
 ​	除了基本的AtomicInteger类外，我们自己的对象也可以用并发包里的类AtomicReference<V>包装成原子对象，从而进行原子操作compareAndSet：
 
@@ -50,7 +50,7 @@
 
 ![](./images/17.jpg)
 
-9.AtomicStampedReference版本号原子引用
+**9.AtomicStampedReference版本号原子引用**
 
 ​		AtomicStampedReference可以解决ABA问题，加入了时间戳的版本号，类似于乐观锁，如果有其他线程更改了该原子引用，则版本号变大，该线程再compareAndSet(expectedReference,newReference,stamp,stamp+1)的时候会带上时间戳版本号一起比较，若时间戳版本号发生了变化（变大），则更新失败，返回false.如图：
 
