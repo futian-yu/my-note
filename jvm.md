@@ -61,7 +61,7 @@
 	以方法区的静态变量或栈针变量表的变量为Root根节点,通过这个root去找其他下级节点，无法到达的对象在GC中会被清理。
 ```
 
-![](./images/1/76.jp)
+![](./images/1/76.jpg)
 
 
 
@@ -72,7 +72,7 @@
 //缺点：由于分出了Survivor2不存放对象，真正存放新对象的内存区域会变少，Eden:Survivor1:Survivor2比例为8:1:1，少了10%的可用内存。
 ```
 
-![](./images/1/77.jp)
+![](./images/1/77.jpg)
 
 
 
@@ -83,7 +83,7 @@
 //缺点：会产生大量的内存碎片
 ```
 
-![](./images/1/78.jp)
+![](./images/1/78.jpg)
 
 
 
@@ -93,15 +93,15 @@
 //既不浪费空间，也不产生碎片，但是耗时间。因为滑动碎片需要时间。
 ```
 
-![](./images/1/79.jp)
+![](./images/1/79.jpg)
 
 三、谈谈你对GCRoots的理解
 
 ​	jvm寻找垃圾对象，可枚举根节点(GCRoots对象)做可达性分析(根搜索路径)。如下图：
 
-![](./images/1/80.jp)
+![](./images/1/80.jpg)
 
-![](./images/1/81.jp)
+![](./images/1/81.jpg)
 
 ​	四类可以作为GCRoots对象的东西：
 
@@ -112,7 +112,98 @@
 //4.本地方法栈中JNI(Native)引用的对象。
 ```
 
-四、jvm标配参数、X参数和**XX参数**
+四、jvm标配参数、X参数和**XX参数**(https://blog.csdn.net/lixinkuan328/article/details/94505882)
+
+**（1）标配参数（以-开头）**
+
+​	 在JDK各个版本之间稳定，很少有大的变化。
+
+![](./images/1/82.jpg)
+
+**（2）X参数（以-X开头）**
+
+![](./images/1/83.jpg)
+
+**（3）XX参数--只有类2种类型（以-XX开头）**
+
+**【1】Boolean类型XX参数    公式：-XX:+ 或者-XX:- 某个属性值（+表示开启，-表示关闭）**
+
+```java
+    案例：
+
+       1）是否打印GC收集细节
+               -XX:+PrintGCDetails
+               -XX:-PrintGCDetails
+        2）是否使用串行垃圾收集器
+               -XX:+UseSerialGC
+               -XX:-UserSerialGC    
+```
+
+![](./images/1/84.jpg)
+
+```java
+       jps -l                                           表示查看java运行的进程号
+       jinfo -flag PrintGCDetails  pid    表示查看JVM是否配置PrintGCDetails参数
+       -XX:-PrintGCDetails                   减号表示没有配置PrintGCDetails参数
+```
+
+![](./images/1/85.jpg)
+
+**【2】KV设值类型  公式：-XX: key（属性）= value（属性值）**
+
+![](./images/1/86.jpg)
+
+**二、jinfo查看当前运行程序配置：公式：jinfo -flag 配置项 进程号**
+
+```java
+案例：    查看JVM所有配置项（默认+人工配置）
+         jinfo -flags 进程号
+         Non-default VM flags表示JVM默认参数
+         Command line表示人工配置参数
+```
+
+![](./images/1/87.jpg)
+
+**三、如何解释-Xms和-Xmx参数属于XX参数**
+
+```java
+   -Xms和-Xmx两个经典参数看起既不像Boolean类型XX参数，也不像KV设值类型XX参数。那为什么-Xms和-Xmx又属于XX参数？
+       -Xms = -XX:InitialHeapSize
+       -Xmx = -XX:MaxHeapSize 
+```
+
+**四、盘点家底JVM默认值**
+**（1）第一种查看JVM默认值方式**    
+
+```java
+jinfo -flag 参数项 进程号
+       jinfo -flags 进程号
+```
+
+**（2）第二种查看JVM默认值方式**    
+
+```java
+公式：java -XX:+PrintFlagsInitial（查看jvm未更改的默认参数）
+       公式：java -XX:+PrintFlagsFinal（查看jvm已经更改过的参数）
+       :=表示jvm启动时候默认修改或者人工更改过的参数
+       =表示jvm没有更改过的默认参数
+    uintx InitialHeapSize   := 266338304      {product} 默认为操作系统64/1内存（我本机内存为16G）
+```
+
+ ![](./images/1/88.jpg)
+**（3）-XX:+PrintCommandLineFlags打印命令行参数**
+
+![](./images/1/89.jpg)
+
+**五、XX参数总结**(要知道主要的几个就行，其他的当作字典来查)
+
+![](./images/1/90.jpg)
+
+![](./images/1/91.jpg)
+
+![](./images/1/92.jpg)
+
+![](./images/1/93.jpg)
 
 
 
@@ -120,19 +211,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+//test
 
 
 
