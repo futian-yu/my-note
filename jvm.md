@@ -197,6 +197,11 @@ jinfo -flag 参数项 进程号
 
 **五、XX参数总结**(要知道主要的几个就行，其他的当作字典来查)
 
+```java
+//查看jvm的栈大小：jinfo -flag ThreadStackSize 61156			
+//给定栈空间128k的大小配置： -Xss128k    
+```
+
 ![](./images/1/90.jpg)
 
 ![](./images/1/91.jpg)
