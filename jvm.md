@@ -222,11 +222,13 @@ jinfo -flag 参数项 进程号
 
 
 
+**六、输出详细GC收集日志信息**
 
+![](./images/1/96.jpg)
 
+![](./images/1/97.jpg)
 
-
-
+![](./images/1/95.jpg)
 
 
 
