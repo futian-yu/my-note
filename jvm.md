@@ -206,13 +206,27 @@ jinfo -flag 参数项 进程号
 //给定栈空间128k的大小配置： -Xss128k    
 ```
 
-几个主要的需要知道的参数：
+- 几个主要的需要知道的参数：
 
 ![](./images/1/94.jpg)
 
+- 常用参数之 **-XX:SurvivorRatio**【设置伊甸园区和幸存区的比例】
+
+![](./images/1/98.jpg)
+
+- 常用参数之 -XX:NewRatio
+
+```java
+//常用参数之 -XX:NewRatio【配置新生代与老年代在堆结构的占比】
+默认
+-XX:NewRatio=2.新生代占1,老年代占2，年轻代占整个堆的1/3;
+加入
+-XX:NewRatio=4.新生代占1,老年代占4，年轻代占整个堆的1/5。NewRatio的值就是设置老年代的占比，剩下的1给新生代.
+```
 
 
-![](./images/1/90.jpg)
+
+![jvm常用参数](./images/1/90.jpg)
 
 ![](./images/1/91.jpg)
 
@@ -222,17 +236,13 @@ jinfo -flag 参数项 进程号
 
 
 
-**六、输出详细GC收集日志信息**
+**六、输出详细GC收集日志信息(-XX:+PrintGCDetails)**
 
 ![](./images/1/96.jpg)
 
 ![](./images/1/97.jpg)
 
 ![](./images/1/95.jpg)
-
-
-
-
 
 
 
