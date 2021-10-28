@@ -246,6 +246,69 @@ jinfo -flag 参数项 进程号
 
 
 
+**七、强软弱虚引用及其适用场景**
+
+```java
+//强软弱虚引用的gc
+	强引用(默认,95%以上的都是)：死都不收，就算OOM也不会回收;
+	软引用(java.lang.ref.SoftReference)：当系统内存够用的时候，不会被回收；当系统内存不够用的时候，会被回收；【mybatis底层源码大量用到】
+	弱引用(java.lang.ref.WeakReference)：只要有GC，一律回收,比如WeakHashMap();
+	虚引用(java.lang.ref.PhantomReference)：如果一个对象仅持有虚引用，那么它就和没有任何引用一样，在任何时候都可能被垃圾回收器回收，它不能单独使用也不能通过它访问对象，虚引用必须和引用队列联合（ReferenceQueue）使用。 虚引用的主要作用是跟踪对象被垃圾回收的状态，仅仅是提供了一种对象被finalize以后，做某些事情的机制。PhantomReference的get方法总是返回null，因此无法访问对应的引用对象。其意义在于说明一个对象已经进入finalization阶段，可以被gc回收，用来实现比finalization机制更灵活的回收操作。
+	
+//强软弱虚引用的适用场景
+	场景：假如有一个应用需要读取大量的本地图片：
+	- 如果每次读取图片都从硬盘读取则会严重影响性能;
+	- 如果一次全部加载到内存中又可能造成内存溢出。
+	
+	---> 此时软引用可以解决这个问题。
+	
+	设计思路是：用一个HashMap来保存图片的路径和相应图片对象关联的软引用之间的映射关系，当内存不足时，JVM会自动回收这些缓存图片对象所占用的空间，从而有效避免了OOM的问题。
+	Map<...> imageCache = new HashMap<String,new SoftReference<Bitmap>>();
+
+```
+
+​		引用队列的使用：new WwakReference<o1,referenceQueue>
+
+![](./images/1/99.jpg)
+
+​		虚引用的使用，结合引用队列，在gc之前放入引用队列中，可以gc后做点想做的事,有点类似AOP的后置通知.
+
+![](./images/1/100.jpg)
+
+
+
+**八、jvm常见内存溢出**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
