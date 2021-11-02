@@ -38,7 +38,21 @@
 
 ![](./images/21.jpg)
 
-
+```java
+public class StringPool58Demo{
+	public static void main(String args[]){
+        String str = new StringBulider("58").append("tongcheng").toString;
+        System.out.println(str);//58tongcheng
+        System.out.println(str.intern());//58tongcheng
+        System.out.println( str == str.intern());//true
+        
+        String str = new StringBulider("ja").append("va").toString;
+        System.out.println(str);//java
+        System.out.println(str.intern());//java
+        System.out.println( str == str.intern());//false.为何这里为false呢？这是周志明老师的深入理解jvm虚拟机的原题.  intern先找常量池有没有，没有则新建一个.
+    }
+}
+```
 
 ===========================2021年9月15日更新=============================
 
