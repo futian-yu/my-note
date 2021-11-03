@@ -195,7 +195,7 @@ Ctrl+c 是退出tail命令。
 
 ​	最直接的办法是杀死进程：
 
-​		ps -ef|grep tomcat    查看端口号；
+​		ps -ef|grep tomcat    查看进程号；
 
 ![image-20201026190348128](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20201026190348128.png)
 
