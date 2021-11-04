@@ -1,12 +1,12 @@
 **Spring AOP动态代理**
 
-1.为什么要使用代理？
+**1.为什么要使用代理？**
 
 - 增强被代理对象的能力.
 
 
 
-2.代理的类型：
+**2.代理的类型：**
 
  - 静态代理:静态代理要求代理类和委托类都实现同一个接口，代理类里面实现的方法可以增强委托类的能力.（只需传入委托类,通过重载的方法增强额外能力,再执行委托类原本的能力即可）.
 
@@ -97,14 +97,14 @@ public class MethodInterceptorImpl implements MethodInterceptor {
 
 
 
-3.jdk和Cglib动态代理的区别：
+**3.jdk和Cglib动态代理的区别：**
 
 - Jdk动态代理：利用拦截器（InvocationHandler）加上反射机制生成一个代理接口的匿名类，在调用具体方法前调用InvocationHandler来处理.
 - Cglib动态代理：利用ASM框架，把委托类生成的class字节码文件加载进来，通过修改其字节码生成子类（即增强后的代理对象）
 
 
 
-4.Spring如何选择使用JDK还是cglib动态代理？
+**4.Spring如何选择使用JDK还是cglib动态代理？**
 
 ​		当bean实现接口时，会用JDK代理模式；当bean没有实现接口，用cglib实现；也可以强制使用cglib（在spring配置中加入<aop:aspectj-autoproxy proxyt-target-class=”true”/>）
 
