@@ -1,6 +1,10 @@
 **JUC之AQS**
 
-**1.AQS(AbstractQueuedSynchronizer)是什么？**
+参考链接：https://blog.csdn.net/oneby1314/article/details/113789332
+
+
+
+1.AQS(AbstractQueuedSynchronizer)是什么？**
 
 ​		AQS是抽象的队列同步器，基石类的框架。它是用来构建锁或者其他同步器组件的重量级基础框架及整个JUC体系的基石。通过内置的FIFO队列来完成资源获取线程的排队工作，并通过一个int类型变量表示持有锁的状态。AQS实现了对同步状态的管理，以及对阻塞线程进行排队，等待通知等一下底层的实现处理。
 
