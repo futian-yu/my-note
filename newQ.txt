@@ -6,17 +6,17 @@
 
 · 能流畅地阐述自己在项目中解决过的比较复杂的问题。
 
-1.接口和抽象类的区别.
-2.栈和队列的区别
+1.接口和抽象类的区别.(https://www.cnblogs.com/dolphin0520/p/3811437.html)
+2.栈和队列的区别.(https://www.jianshu.com/p/194c036b87f3)
 3.Int和Integer的区别和自动拆箱/装箱的相关问题
 https://www.cnblogs.com/dolphin0520/p/3780005.html
 4.常量池相关问题.   -->配合作用域问. String str = new String("abc");  str = "abc";
 5.你用过HashMap吗？说说HashMap的底层原理？你为什么用到它？(https://blog.csdn.net/baidu_28068985/article/details/78529246)
 6.当两个对象的hashcode相同会发生什么?这时如何获取值对象？
 7.HashMap默认负载因子和大小是多少？如果HashMap的大小超过了负载因子(load factor)定义的容量，会怎样？
-8.你了解重新调整HashMap大小存在什么问题吗？
+8.你了解重新调整HashMap大小存在什么问题吗？为什么竞争条件发生就死循环了？（jdk1.7里面发生的,1.8尾插法修复了死循环的问题）
 9.我们可以使用自定义的对象作为键吗？
-10.HashSet、HashTable、LinkedHashMap、ConcurrentHashMap与HashMap区别？
+10.HashSet、HashTable、LinkedHashMap、ConcurrentHashMap与HashMap区别？  https://www.cnblogs.com/java-chen-hao/p/10320783.html
 11.讲讲ConcurrentHashMap底层原理？
 12.说说ArrayList、Map、Set底层原理，它们线程安全吗？要是线程不安全该如何解决呢？Vector、Collections. 、集合不安全之写时修改异常
 13.jdk1.7版本和1.8版本的HashMap的区别? **
@@ -36,7 +36,7 @@ https://www.cnblogs.com/dolphin0520/p/3780005.html
 26.分布式环境下，怎么保证线程安全?
 27.JVM内存机制
 28.介绍下垃圾收集机制，垃圾收集有哪些算法，各自的特点?
-29.聊聊GC，谈谈Major GC，FullGe区别，垃圾收集器有哪些，他们的区别？
+29.聊聊GC，谈谈Major GC，FullGC区别，垃圾收集器有哪些，他们的区别？
 30.OutOfMemeryError这个错误你遇到过吗？你是怎么解决处理的？
 31.JVM调优有哪些参数，介绍下，线上环境上，你是怎么查看JVM的参数并进行调优的？
 32.能不能自己写一个类叫java.lang.String（类加载的过程，双亲委派模型）
@@ -48,3 +48,5 @@ https://www.cnblogs.com/dolphin0520/p/3780005.html
 37.讲讲创建单一的/固定数的/可变的三种线程池的方法，你在工作中用哪个多？超级大坑
 38.你在工作中是如何使用线程池的?是否自定义过线程池使用？
 39.合理配置线程池你是如何考虑的？
+
+
