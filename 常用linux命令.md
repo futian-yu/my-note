@@ -64,9 +64,12 @@ host键+c #虚拟机切换为窗口自适应模式(host键为右边的ctrl键)
 
 
 
+**kafka相关命令**
 
-
-
+```shell
+# 查看kafka版本号（进入到kafka安装目录下）
+find ./libs/ -name \*kafka_\* | head -1 | grep -o '\kafka[^\n]*'
+```
 
 
 

@@ -36,7 +36,7 @@ Ctrl-Shift-U：转化为大/小写
 
 ALT-SHIFT-U:转化为驼峰形式
 
-Ctrl+H 显示类结构图
+**Ctrl+H 显示类结构图**
 
 Ctrl+Q 显示注释文档 
 
@@ -50,7 +50,11 @@ SHIFT+ENTER 另起一行
 
 **shift + f6 **:批量修改名称,这也是一个非常实用的快捷键，常用于代码重构。
 
-alt + insert : 选中文件夹后，快捷键创建类
+alt + insert : 选中文件夹后，快捷键创建类(快速创建getter和setter)
+
+ctrl+P:参数提示（必备）
+
+ctrl+E：显示最近代开的文件记录列表
 
  
 

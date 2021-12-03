@@ -1,3 +1,5 @@
+//1.理论学习；  2.复习；	3.自问自答	4.选几个练习一下（实践）	5.再次自问自答	
+
 · 知道你的项目到底是做什么的，有哪些功能。
 
 · 知道你做的项目在整个项目中所处的位置及作用，并能清晰地阐述模块间的调用关系。
@@ -17,54 +19,55 @@ https://www.cnblogs.com/dolphin0520/p/3780005.html
 8.你了解重新调整HashMap大小存在什么问题吗？为什么竞争条件发生就死循环了？（因为1.7的头插法引起的，比如三个key的hashCode相同，此时T1在指针操作前阻塞了，等到T2全部执行完，T1继续执行，这时候可能发生。jdk1.7里面发生的,1.8尾插法修复了死循环的问题）
 9.我们可以使用自定义的对象作为键吗？
 10.HashSet、HashTable、LinkedHashMap、ConcurrentHashMap与HashMap区别？  https://www.cnblogs.com/java-chen-hao/p/10320783.html
-11.讲讲ConcurrentHashMap底层原理？
-12.说说ArrayList、Map、Set底层原理，它们线程安全吗？要是线程不安全该如何解决呢？Vector、Collections. 、集合不安全之写时修改异常
-13.jdk1.7版本和1.8版本的HashMap的区别? **
+11.讲讲ConcurrentHashMap底层原理？(put方法里面跳出的while循环的条件，以及如何保证线程安全.---》待详细解答:https://www.cnblogs.com/jajian/p/10385377.html)		
+	为什么要先初始化segments[0]? 收集所有HashMap、ConcurrentHashMap相关的问题并解答ConcurrentHashMap相关的问题并解答
+12.说说ArrayList、Map、Set底层原理，它们线程安全吗？要是线程不安全该如何解决呢？Vector、Collections. 、集合不安全之写时修改异常	（https://www.cnblogs.com/cy0628/p/15272417.html）
+13.jdk1.7版本和1.8版本的HashMap的区别? **	https://blog.csdn.net/qq_38685503/article/details/88430788
 14.HashMap能不能排序？HashMap的长度为什么要是2的幂次方？
-答：为了减少Hash碰撞，尽量使Hash算法的结果均匀分布. index = hashCode("hangzhou") & (Length - 1) ;index做与运算时，例如Length若为9,length-1为1000,此时hashCode不管为多少，index都为8或0，有些甚至根本不会出现，反观2的n次方，尽可能的实现了hashCode&(length-1)后的随机性.
-15.创建线程的几种方式？Wait，sleep分别是谁的方法，区别？线程间的通信方式？
+答：1）HashMap不能排序，可以转为List后再转成LinkedHashMap，可对key、可对value进行排序。2）为了减少Hash碰撞，尽量使Hash算法的结果均匀分布. index = hashCode("hangzhou") & (Length - 1) ;index做与运算时，例如Length若为9,length-1为1000,此时hashCode不管为多少，index都为8或0，有些甚至根本不会出现，反观2的n次方，尽可能的实现了hashCode&(length-1)后的随机性.
+15.创建线程的几种方式？Wait，sleep分别是谁的方法，区别？线程间的通信方式？(https://segmentfault.com/a/1190000022878543;)	https://www.jianshu.com/p/25e959037eed
 16.介绍下什么是死锁(四个必要条件)，遇见过死锁吗？你是怎么排查的。（可以通过jps排查）（https://www.jianshu.com/p/e9de87bc2906）
-17.创建线程池的几种方式，线程池有什么好处?
-18.Synchronized、Lock、ReentrantLock的区别，用法及原理?
-19.ThreadLocal的用法和原理?
-20.Volatile关键字的作用和原理.
-21.说说对公平锁，非公平锁，可重入锁，自旋锁，读写锁的理解？
-22.CAS是什么及底层原理？
-23.ArrayBlockingQueue，LinkedBlockingQueue，SynchronousQueue等等阻塞队列的理解?
-24.ThreadPoolExecutor的传入参数及内部工作原理?
-25.给你一个具体的业务场景，让你使用ThreadPoolExecutor创建一个适合的线程池.
-26.分布式环境下，怎么保证线程安全?
-27.JVM内存机制
-28.介绍下垃圾收集机制，垃圾收集有哪些算法，各自的特点?
-29.聊聊GC，谈谈Major GC，FullGC区别，垃圾收集器有哪些，他们的区别？
-30.OutOfMemeryError这个错误你遇到过吗？你是怎么解决处理的？
-31.JVM调优有哪些参数，介绍下，线上环境上，你是怎么查看JVM的参数并进行调优的？
-32.能不能自己写一个类叫java.lang.String（类加载的过程，双亲委派模型）
-33.Spring用了哪些设计模式？Spring注入bean的方式？对SpringIOC和SpringAOP的理解？(https://www.zhihu.com/question/23277575/answer/169698662)
-34.Spring事务隔离级别和传播机制？
-35.Mybatis的缓存机制（一级缓存和二级缓存），Mybatis的mapper文件中#和$的区别?
-35.SpringMVC的流程?
-36.线程池的拒绝策略
-37.讲讲创建单一的/固定数的/可变的三种线程池的方法，你在工作中用哪个多？超级大坑
-38.你在工作中是如何使用线程池的?是否自定义过线程池使用？
-39.合理配置线程池你是如何考虑的？
+17.创建线程池的几种方式，线程池有什么好处?	(https://segmentfault.com/a/1190000037674645)
+18.Synchronized、Lock、ReentrantLock的区别，用法及原理?(https://juejin.cn/post/6844903695298068487)
+19.ThreadLocal的用法和原理? (https://juejin.cn/post/6844903802252820487;)-->视频详细了解
+20.Volatile关键字的作用和原理.	笔记	
+21.说说对公平锁，非公平锁，可重入锁，自旋锁，读写锁的理解？	笔记
+22.CAS是什么及底层原理？   笔记	
+23.ArrayBlockingQueue，LinkedBlockingQueue，SynchronousQueue等等阻塞队列的理解?	 笔记
+24.ThreadPoolExecutor的传入参数及内部工作原理?(https://www.cnblogs.com/nullzx/p/5184164.html)
+25.给你一个具体的业务场景，让你使用ThreadPoolExecutor创建一个适合的线程池.(https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
+26.分布式环境下，怎么保证线程安全?	并发编程,分布式锁
+27.JVM内存机制？(笔记需多背一背；https://zhuanlan.zhihu.com/p/38056939;首先一张JVM内存图要画的出来,以及各个区的作用。然后是四大垃圾回收算法、七大垃圾收集器)
+28.介绍下垃圾收集机制，垃圾收集有哪些算法，各自的特点?	笔记
+29.聊聊GC，谈谈Major GC，FullGC区别，垃圾收集器有哪些，他们的区别？（https://blog.csdn.net/dl674756321/article/details/108130050）
+30.OutOfMemeryError这个错误你遇到过吗？你是怎么解决处理的？	笔记
+31.JVM调优有哪些参数，介绍下，线上环境上，你是怎么查看JVM的参数并进行调优的？	笔记
+32.能不能自己写一个类叫java.lang.String（类加载的过程，双亲委派模型;不是很懂）（https://www.jianshu.com/p/b2b332ad0514）
+33.Spring用了哪些设计模式？Spring注入bean的方式？对SpringIOC和SpringAOP的理解？(https://www.zhihu.com/question/23277575/answer/169698662;https://cloud.tencent.com/developer/news/596714)
+34.Spring事务隔离级别和传播机制？(https://blog.csdn.net/zhouxukun123/article/details/79874797)
+35.Mybatis的缓存机制（一级缓存和二级缓存），Mybatis的mapper文件中#和$的区别?	(看视频做个详细的笔记)
+35.SpringMVC的流程? (https://www.jianshu.com/p/8a20c547e245)
+36.线程池的拒绝策略	笔记
+37.讲讲创建单一的/固定数的/可变的三种线程池的方法，你在工作中用哪个多？超级大坑		笔记
+38.你在工作中是如何使用线程池的?是否自定义过线程池使用？	笔记
+39.合理配置线程池你是如何考虑的？	笔记
 
 ===============================================
 蚂蚁花呗一面（一个小时）：
-1.Java容器有哪些？哪些是同步容器，哪些是并发容器？
-2.ArrayList和LinkedList的插入和访问的时间复杂度？
-3.java反射原理，注解原理？
+1.Java容器有哪些？哪些是同步容器，哪些是并发容器？	（https://blog.csdn.net/weixin_41884118/article/details/88054094）
+2.ArrayList和LinkedList的插入和访问的时间复杂度？	（https://www.jianshu.com/p/9fdfa125c00e）
+3.java反射原理，注解原理？ （https://zhuanlan.zhihu.com/p/58793884；https://cloud.tencent.com/developer/article/1522675）
 4.新生代分为几个区？使用什么算法进行垃圾回收？为什么使用这个算法？
-5.HashMap在什么情况下会扩容，或者有哪些操作会导致扩容？
-6.HashMap push方法的执行过程？
-7.HashMap检测到hash冲突后，将元素插入在链表的末尾还是开头？
-8.1.8还采用了红黑树，讲讲红黑树的特性，为什么人家一定要用红黑树而不是AVL、B树之类的？
-9.https和http区别，有没有用过其他安全传输手段？
+5.HashMap在什么情况下会扩容，或者有哪些操作会导致扩容？	笔记
+6.HashMap push方法的执行过程？	笔记
+7.HashMap检测到hash冲突后，将元素插入在链表的末尾还是开头？	笔记
+8.1.8还采用了红黑树，讲讲红黑树的特性，为什么人家一定要用红黑树而不是AVL、B树之类的？（了解平衡二叉树、红黑树、B树、B+树）
+9.https和http区别，有没有用过其他安全传输手段？(https://www.runoob.com/w3cnote/http-vs-https.html)
 10.线程池的工作原理，几个重要参数，然后给了具体几个参数分析线程池会怎么做，最后问阻塞队列的作用是什么？
-11.linux怎么查看系统负载情况？
-12.请详细描述springMVC处理请求全流程？
-13.spring 一个bean装配的过程？
-14.讲一讲AtomicInteger，为什么要用CAS而不是synchronized？
+11.linux怎么查看系统负载情况？(笔记)
+12.请详细描述springMVC处理请求全流程？(https://www.jianshu.com/p/8a20c547e245)
+13.spring 一个bean装配的过程？（看不太懂，找个视频，做个笔记总计）
+14.讲一讲AtomicInteger，为什么要用CAS而不是synchronized？	笔记
 
 -----------------------------------------------------------
 美团一面经验：
