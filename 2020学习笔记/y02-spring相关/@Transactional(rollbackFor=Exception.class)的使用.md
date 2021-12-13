@@ -1,6 +1,6 @@
-### @Transactional(rollbackFor=Exception.class)的使用
+### @Transactional事务注解
 
-**1.先来看看异常的分类：**
+#### 1.先来看看异常的分类：
 
 ![img](https://img-blog.csdn.net/20171027131229769)
 
@@ -23,7 +23,7 @@ Exception是异常，他又分为运行时异常RuntimeException和非运行时�
 
 ​      非运行时异常是RuntimeException以外的异常，类型上都属于Exception类及其子类。如IOException、SQLException等以及用户自定义的Exception异常。对于这种异常，JAVA编译器强制要求我们必需对出现的这些异常进行catch并处理，否则程序就不能编译通过。所以，面对这种异常不管我们是否愿意，只能自己去写一大堆catch块去处理可能的异常。
 
-**2.@Transactional 的写法**
+#### 2.@Transactional 的写法
 
 ```java
 	@Transactional`注解既可以写在方法上也可以写在类上。写在类上则这个类的所有public方法都将会有事务。这样显然会使一些不需要事务的方法产生事务，所以更好的做法是在想要添加事务的方法上标注`@Transactional`。
@@ -37,7 +37,7 @@ Exception是异常，他又分为运行时异常RuntimeException和非运行时�
 
 
 
-**3.玩转Spring —— 消失的事务**
+#### 3.玩转Spring —— 消失的事务
 
 **一个没有加@Transactional注解的方法，去调用一个加了@Transactional的方法，会不会产生事务？**
 
@@ -127,7 +127,7 @@ public void deleteAllAndAddOne(Customer customer) {
 
 看了一晚上代码，恍然大悟。咱们先画个图解释一下，再来看看代码。
 
-## 图解@Transactional
+#### 4.图解@Transactional
 
 首先，我们得先弄懂@Transactional的原理。
 
@@ -169,7 +169,7 @@ public void deleteAllAndAddOne(Customer customer) {
 
 这下就很清晰了，代理对象的methodA，去调用原来对象的methodA，原来对象的methodA，再去调用原来对象的methodB，而原来对象的methodB，是不具有事务的。事务只存在于代理对象的methodB. 所以整个方法也就没有事务了。
 
-## 看看代码
+#### 5.看看代码
 
 最后再来看看代码。
 
@@ -198,7 +198,50 @@ CglibAopProxy会去检查要调用的方法，有没有AOP调用链：
 
 
 
+​		总结：如果抛出的异常在本方法未被捕获，则继续往上层方法抛，如果上层方法有try{}catch{}，则被捕获；如果上层没有try{}catch{},则继续往外抛，如此反复。
+
+#### 6.spring事务嵌套引发的问题
+
+```java
+/************************************例子************************************/
+//下面是personService的addPerson方法，也是有事务的
+@Transactional
+@Override
+ public boolean addPerson(User user) {
+     System.out.println(1 / 0);
+     return false;
+ }
+
+ @Transactional
+ @Override
+  public boolean create(User user) {
+      int i = userMapper.insert(user);
+      try {
+          personService.addPerson(user);
+      } catch (Exception e) {
+          System.out.println("不断程序，用来输出日志~");
+      }
+      return i == 1;
+  }
+
+结果报错===>：Transaction rolled back because it has been marked as rollback-only.
+    
+    
+//原因：内部方法抛出异常，并标记了该事务只能被回滚；但是外层方法catch住异常之后并没有往外抛，继续执行，准备commit，但是这个时候发现事务被标记为rollback-only，冲突了，就抛出了这个异常。
+
+//解决方法：尝试用一个新事物解决：@Transactional(propagation = Propagation.REQUIRES_NEW)，但是有的时候这样是违背业务场景的，结合具体业务场景也可以把两个方法写到一个事务里。
+
+```
 
 
-总结：如果抛出的异常在本方法未被捕获，则继续往上层方法抛，如果上层方法有try{}catch{}，则被捕获；如果上层没有try{}catch{},则继续往外抛，如此反复。
+
+
+
+
+
+
+
+
+
+
 

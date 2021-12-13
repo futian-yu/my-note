@@ -1,20 +1,20 @@
-**kafka**
+### kafka
 
 //kafka是比较适合吞吐量大，快的要求;  RibbitMQ适合低延迟的要求.
 
 //kafka可以做到60/s，每小时200GB/单机，相当牛逼.
 
+#### 一、kafka基础知识
 
-
-**1.kafka速度如何？**
+#### 1.kafka速度如何？
 
 ![](./images/40.jpg)
 
 
 
-**2.为什么kafka这么快？**
+#### 2.为什么kafka这么快？
 
-​	**1）集群扩展:生产者多了也就快了.(做集群负载均衡 要先做好)**
+##### 	1）集群扩展:生产者多了也就快了.(做集群负载均衡 要先做好)
 
 ​		//既然有分区这一概念，那么生产者每次生产数据该向哪个分区发送？ ==> 常用分区写入策略:轮询分区策略(默认)、随机分区策略、按key分区分配策略、自定义分区策略.
 
@@ -26,7 +26,7 @@
 
 ​		![](./images/42.jpg)
 
-​	**2）零拷贝**
+##### 	2）零拷贝
 
 ​		//内核空间到用户空间切换非常耗时，以及调用内核函数调用驱动去用户空间处理磁盘数据也耗时.正常情况下的拷贝这里涉及到四次上下文切换:
 
@@ -81,17 +81,19 @@ public class Test{
 
 
 
-​	**3）磁盘顺序写**: 在磁盘上读写的速度可能比较慢，因为寻址会比较消耗时间。但是kafka保证了磁盘顺序写，所以寻址消耗的时间可以省去，就非常快了。
+##### 	3）磁盘顺序写:
 
-​	**4）NIO网络通信**
+​		在磁盘上读写的速度可能比较慢，因为寻址会比较消耗时间。但是kafka保证了磁盘顺序写，所以寻址消耗的时间可以省去，就非常快了。
 
-​	**5）PageCache**
+##### 	4）NIO网络通信
+
+##### 	5）PageCache
 
 ​		kafka写入数据的时候，也是写到内核缓冲区(PageChahe)，然后操作系统内核负责调度线程把内核缓冲区的数据(脏页)同步到磁盘中。写入内核缓冲区这里使用了MMap技术，核心思想是多个用户态的kafka进程把数据写入一个java虚拟内存(可以认为是内核态)，然后跟内核缓冲区进行数据交换与写入，这样就不用在用户态和内核态之间频繁切换上下文。
 
 ![](./images/48.jpg)
 
-​	**6）消息压缩**
+##### 	6）消息压缩
 
 ​			kafkaproducer生产数据到各个partition后，会有一个消息累加器计算消息数量，达到一定数量后，然后再进行分批次的发送。同时再发送过程中会进行一个压缩。
 
@@ -99,7 +101,7 @@ public class Test{
 
 
 
-**3.kafka如何保证消息的顺序性？**
+#### 3.kafka如何保证消息的顺序性？
 
    	 1）因为单个partition内是有序的，所以可以一个topic对应一个partition来保证kafka生产/消费的顺序性。	
 
@@ -117,11 +119,11 @@ public class Test{
 
 
 
-**4.kafka消息重复和丢失的场景及解决方案.**
+#### 4.kafka消息重复和丢失的场景及解决方案.
 
 - **重复消费**
 
-​	**1)生产者重复生产导致消息重复**
+##### 	1)生产者重复生产导致消息重复
 
 ​		producer发出一条消息，broke落盘后因为网络等原因使得发送端得到一个发送失败的响应或者网络中断，然后producer收到一个可恢复的异常，进而重试消息导致消息重复。		
 
@@ -140,7 +142,7 @@ public class Test{
 
 
 
-​	**2)消费者重复消费同一个offset的数据**
+##### 	2)消费者重复消费同一个offset的数据
 
 ​		根本原因是数据消费完没有及时提交offset到broke.
 
@@ -161,7 +163,7 @@ public class Test{
 
 - **消息丢失**
 
-  **1)生产者端消息丢失.**
+  ##### 1)生产者端消息丢失.
 
 ​         生产者在发送消息时，会有一个ack机制，当ack=0 或者 ack=1时，都可能会丢消息。如下所示：
 
@@ -174,7 +176,7 @@ public class Test{
 	这意味着leader需要等待所有备份(min.insync.replicas配置的备份个数)都成功写入日志，这种策略会保证只要有一个备份存活就不会丢失数据。这是最强的数据保证。一般除非是金融级别，或跟钱打交道的场景才会使用这种配置。当然如果min.insync.replicas配置的是1则也可能丢消息，跟acks=1情况类似。
 ```
 
-​	**2)消费者端消息丢失**
+##### 	2)消费者端消息丢失
 
 ​		消费端丢消息最主要体现在消费端offset的自动提交，如果开启了自动提交，万一消费到数据还没处理完，此时你consumer直接宕机了，未处理完的数据 丢失了，下次也消费不到了，因为offset已经提交完毕，下次会从offset出开始消费新消息。**解决办法是采用消费端的手动提交:**
 
@@ -189,9 +191,55 @@ public class Test{
     ack.acknowledge();
 ```
 
-**5.kafka消息积压的解决方案?**
+#### 5.kafka消息积压的解决方案?
 
 ​	此种情况如果积压了上百万未消费消息需要紧急处理，可以修改消费端程序，让其将收到的消息快速转发到其他topic(可以设置很多分区)，然后再启动多个消费者同时消费新主题的不同分区。如图所示：
 
 ![](./images/1/51.jpg)
+
+
+
+### 二、kafka常用命令行
+
+##### 1.kafka命令行查看consumer以及topic消费情况
+
+```shell
+#####其中
+TOPIC：该group里消费的topic名称
+PARTITION：分区编号
+CURRENT-OFFSET：该分区当前消费到的offset
+LOG-END-OFFSET：该分区当前latest offset
+LAG：消费滞后区间，为LOG-END-OFFSET-CURRENT-OFFSET，具体大小需要看应用消费速度和生产者速度，一般过大则可能出现消费跟不上，需要引起应用注意
+CONSUMER-ID：server端给该分区分配的consumer编号
+HOST：消费者所在主机
+CLIENT-ID：消费者id，一般由应用指定
+
+#0.查看所有topic
+bin/kafka-topics.sh --zookeeper 10.2.8.72:2181 --list
+#1.获取group列表，一般而言，应用是知道消费者group的，通常在应用的配置里，如果已知，该步骤可以省略
+bin/kafka-consumer-groups.sh --bootstrap-server 10.2.8.72:9092 --list
+#2.查看指定group下各个topic的具体消费情况
+bin/kafka-consumer-groups.sh --bootstrap-server 10.2.8.72:9092 --group crs-protocol-group --describe
+#3.查看某个topic的内容
+bin/kafka-console-consumer.sh --bootstrap-server 10.2.8.72:9092 --topic crs-protocol-flight-platform --from-beginning
+#4.创建一个新的topic
+bin/kafka-topics.sh --zookeeper 10.2.8.72:2181 --create --topic crs-flight-platform
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

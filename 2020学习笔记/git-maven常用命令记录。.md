@@ -41,6 +41,22 @@
 	git stash
 	git stash pop : 暂时将未提交的变化移除，稍后再移入。
 	
+​git merge合并
+git merge [branch] ：合并指定分支到当前分支。eg：git merge 	bug : 合并bug分支到当前分支。
+
+​挑拣另一个分支的指定提交到当前分支
+git checkout test
+git cherry-pick 62ecb3：挑拣develop的62ecb3提交到test分支(62ecb3是develop的分支)
+
+​合并某个分支上的一系列commits
+	在一些特性情况下，合并单个commit并不够，你需要合并一系列相连的commits。这种情况下就不要选择cherry-pick了，rebase 更适合。还以上例为例，假设你需要合并feature分支的commit76cada ~62ecb3 到master分支。
+	首先需要基于feature创建一个新的分支，并指明新分支的最后一个commit：
+	git checkout -b newbranch 62ecb3
+	然后，rebase这个新分支的commit到master（--ontomaster）。76cada^ 指明你想从哪个特定的commit开始。
+	git rebase --onto master 76cada^
+	得到的结果就是feature分支的commit 76cada   ~ 62ecb3  都被合并到了master分支。
+
+
 	========================================================
 	git reset HEAD readme.txt  :将readme.txt从暂存区移出，恢复到工作区；
 	git reset --hard HEAD^ : 回退到上一个版本（也可以用指定版本代替HEAD^）
