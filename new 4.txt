@@ -1,0 +1,76 @@
+一、jvm
+1.说说JVM内存机制.
+2.介绍下垃圾收集机制，垃圾收集有哪些算法，各自的特点?
+3.聊聊GC，谈谈Major GC，FullGC区别，垃圾收集器有哪些，他们的区别？
+4.OutOfMemeryError这个错误你遇到过吗？你是怎么解决处理的？
+5.JVM调优有哪些参数，介绍下，线上环境上，你是怎么查看JVM的参数并进行调优的？
+6.能不能自己写一个类叫java.lang.String
+
+
+
+
+二、线程池
+1.创建线程的几种方式？
+2.Wait，sleep分别是谁的方法，他们之间的区别？
+3.讲一讲线程间的通信方式？
+4.创建线程池的几种方式，线程池有什么好处?
+5.ArrayBlockingQueue，LinkedBlockingQueue，SynchronousQueue等等阻塞队列的理解?
+6.说说ThreadPoolExecutor的7大传入参数及内部工作原理?
+7.给你一个具体的业务场景，让你使用ThreadPoolExecutor创建一个适合的线程池.
+8.说一说线程池的拒绝策略？
+9.讲讲创建单一的/固定数的/可变的三种线程池的方法，你在工作中用哪个多？
+10.你在工作中是如何使用线程池的?是否自定义过线程池使用？
+11.合理配置线程池你是如何考虑的？
+
+三、spring框架
+1.Spring用了哪些设计模式？
+2.Spring注入bean的方式？
+3.说说对SpringIOC和SpringAOP的理解？
+4.说说Spring事务隔离级别和传播机制？
+5.SpringMVC的流程?
+
+
+
+四、GUC
+1.hashMap
+	1)讲讲hashMap底层原理
+	2)jdk1.7版本和1.8版本的HashMap的区别?
+	3)HashMap能不能排序？HashMap的长度为什么要是2的幂次方？
+
+2.ConcurrentHashMap
+	1)讲讲ConcurrentHashMap底层原理？
+	2)为什么要先初始化segments[0]?
+	
+3.说说ArrayList、Map、Set底层原理，它们线程安全吗？要是线程不安全该如何解决呢？
+4.Synchronized、Lock、ReentrantLock的区别，他们的用法及原理?
+5.ThreadLocal的用法和原理? 
+6.Volatile关键字的作用和原理？
+7.CAS是什么及底层原理？ 
+8.分布式环境下，怎么保证线程安全?
+
+
+五、mysql
+
+
+
+
+
+六、redis
+
+
+
+
+
+7、kafka
+
+
+
+
+
+8、其他
+	1.介绍下什么是死锁(四个必要条件)，遇见过死锁吗？你是怎么排查的。
+	2.说说对公平锁，非公平锁，可重入锁，自旋锁，读写锁的理解？
+	3.说说Mybatis的缓存机制（一级缓存和二级缓存），Mybatis的mapper文件中#和$的区别?
+
+
+
