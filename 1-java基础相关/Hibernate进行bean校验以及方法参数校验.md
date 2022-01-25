@@ -1,8 +1,8 @@
-**Hibernate进行bean校验以及方法参数校验**
+### Hibernate进行bean校验以及方法参数校验
 
 ​		具体使用可以参考bss-service大网项目.
 
-### 准备
+#### 一、准备
 
 下载hibernate validator的依赖包，这里全部使用maven管理依赖。
 
@@ -19,7 +19,7 @@
 </dependency>
 ```
 
-### 校验bean的属性
+#### 二、校验bean的属性
 
 1. 先定义一个需要校验的类，这里采用hibernate validator官方的例子
 
@@ -56,7 +56,7 @@ public class Car {
 
 ​		对于bean的校验首先需要确定要校验哪些类，在这些类的属性添加各种约束（比如@NotNull），通过java.validation.Validation获取Validator，通过validator校验对象，获取校验的结果，其校验结果都是返回一个包含ConstraintViolation对象的集合。
 
-### 校验方法中的参数
+#### 三、校验方法中的参数
 
 比如要校验Car中drive方法中的参数。
 
@@ -124,7 +124,7 @@ public Car buildCar(int seatCount, List<Passenger> passengers) {
 3. 如何自定义校验结果中的message呢？
     下面一起来回答前面提到的几个问题。
 
-### 级联校验
+#### 四、级联校验
 
 通过在属性上添加@Valid注解就可以进行级联校验了。如下：
 
@@ -141,7 +141,7 @@ class Car {
 
 这样在校验Car的时候，也同时会校验Driver中的属性。
 
-### 自定义约束
+#### 五、自定义约束
 
 1.首先定义一个约束，约束是一个注解形式，相当于定义个注解，我们需要确定这个注解是用于属性、类还是方法上等，其次约束注解需要提供几个固定的方法，最后确定这个约束需要的自定义方法。例如要验证汽车的载客人数不能超过座位数的约束。
 
@@ -190,7 +190,7 @@ class Car {
 }
 ```
 
-### 约束分组（GROUP）
+#### 六、约束分组（GROUP）
 
 ​		约束分组用来实现部分校验的功能，例如我们在Car的fields上添加了较多约束，但是在有些场景中我们只需要验证car的部分属性，虽然这种场景的使用应不多，但我们如何实现这种功能呢？
  通过前面的例子我们可以看到，在每一个约束中都包含一个groups的属性，返回class数组，Validator的validate方法也提供一个输入groups的参数，我想大家都明白groups是怎么用的了，对，我们就是可以使用groups实现之校验该跟分组的约束。示例如下：
@@ -257,7 +257,7 @@ validator.validate(driver, DEFAULT.class, DriverChecks.class);
 
 校验的顺序与group的先后顺序一致。
 
-### 自定义message
+#### 七、自定义message
 
 自定义message可以通过多种方式来实现。
 
@@ -305,11 +305,11 @@ constraintContext.buildConstraintViolationWithTemplate( "{com.mycompany.constrai
 
 hibernate-validator还包含一些其他的特性，就不细说了。下面我们看看如何将hibernate-validator应用到实际的开发工作中去。
 
-### 应用例子
+#### 八、应用例子
 
-对于使用springMvc框架的，要在Controller中校验方法参数只需要在参数上注解@Valid和一些约束注解就可以了。
- 在使用一些rpc通讯框架时，一般这些rpc框架都不会集成一些参数校验的组件，需要我们自己写，这个时候我们就可以采用hibernate-validator组件了，这个相比自己去写校验组件真是快多了。
- 一般采用rpc做服务实现时，在服务实现的第一层，我们通过配置aop的方式对服务实现类进行代理，在代理中添加校验的逻辑。如下：
+​		对于使用springMvc框架的，要在Controller中校验方法参数只需要在参数上注解@Valid和一些约束注解就可以了。
+ 		在使用一些rpc通讯框架时，一般这些rpc框架都不会集成一些参数校验的组件，需要我们自己写，这个时候我们就可以采用hibernate-validator组件了，这个相比自己去写校验组件真是快多了。
+ 		一般采用rpc做服务实现时，在服务实现的第一层，我们通过配置aop的方式对服务实现类进行代理，在代理中添加校验的逻辑。如下：
 
 1. 写一个通过hibernate-validator进行校验的类，如下：
 

@@ -1,6 +1,6 @@
-## **jvm类加载器(类的加载机制)**
+### **jvm类加载器(类的加载机制)**
 
-## 前言
+#### 一、前言
 
 今天我们来讲讲`jvm`里`类加载`的过程，我们写了那么多类，却不知道类的加载过程，岂不是很`尴尬`。
 
@@ -8,27 +8,27 @@
 
 jvm组成结构之一就是`类装载器子系统`，我们今天就来仔细讲讲这个组件。
 
-## Java代码执行流程图
+#### 二、Java代码执行流程图
 
 大家通过这个流程图，了解一下我们写好的Java代码是如何执行的，其中要经历`类加载器`这个流程，我们就来仔细讲讲这里面的知识点。
 
 ![image.png](https://segmentfault.com/img/bVcHO1l)
 
-## 类加载子系统
+#### 三、类加载子系统
 
 ![image.png](https://segmentfault.com/img/bVcHO1o)
 
-### 类加载系统架构图
+​																			**类加载系统架构图**
 
 暂时看不懂这两张图没关系，跟着`老哥`往下看![img](https://segmentfault.com/img/remote/1460000037574629)
 
 ![image.png](https://segmentfault.com/img/bVcHO1t)
 
-### 类的生命周期
+##### 3.1 类的生命周期
 
 类的生命周期包括：加载、链接、初始化、使用和卸载，其中`加载`、`链接`、`初始化`，属于`类加载的过程`，我们下面仔细讲解。使用是指我们new对象进行使用，卸载指对象被垃圾回收掉了。
 
-### 类加载的过程
+##### 3.2 类加载的过程
 
 ![image.png](https://segmentfault.com/img/bVcHO1v)
 
@@ -82,7 +82,7 @@ jvm组成结构之一就是`类装载器子系统`，我们今天就来仔细讲
 >
 > 若该类具有父类，`jvm`会保证父类的`init`先执行，然后在执行子类的`init`。
 
-### 类加载器的分类
+##### 3.3 类加载器的分类
 
 ![image.png](https://segmentfault.com/img/bVcHO1F)
 
@@ -167,7 +167,7 @@ ClassLoader.getSystemClassLoader()
 DriverManager.getCallerClassLoader()
 ```
 
-### 类加载机制—双亲委派机制
+#### 四、类加载机制—双亲委派机制
 
 jvm对class文件采用的是按需加载的方式，当需要使用该类时，jvm才会将它的class文件加载到内存中产生class对象。
 
@@ -175,7 +175,7 @@ jvm对class文件采用的是按需加载的方式，当需要使用该类时，
 
 ![image.png](https://segmentfault.com/img/bVcHO1J)
 
-- **工作原理**
+##### **4.1 工作原理**
 
 （1）如果一个`类加载器`接收到了`类加载`的请求，它自己不会先去加载，会把这个请求委托给`父类加载器`去执行。
 
@@ -183,7 +183,7 @@ jvm对class文件采用的是按需加载的方式，当需要使用该类时，
 
 （3）如果父类加载器可以完成加载任务，就返回成功结果，如果父类加载失败，就由子类自己去尝试加载，如果子类加载失败就会抛出`ClassNotFoundException`异常，这就是`双亲委派模式`
 
-- **第三方包加载方式：反向委派机制**
+##### **4.2 第三方包加载方式：反向委派机制**
 
 在Java应用中存在着很多服务提供者接口（Service Provider Interface，SPI），这些接口允许第三方为它们提供实现，如常见的 SPI 有 JDBC、JNDI等，这些 SPI 的接口属于 Java 核心库，一般存在rt.jar包中，由Bootstrap类加载器加载。而Bootstrap类加载器无法直接加载SPI的实现类，同时由于双亲委派模式的存在，Bootstrap类加载器也无法反向委托AppClassLoader加载器SPI的实现类。在这种情况下，我们就需要一种特殊的类加载器来加载第三方的类库，而线程上下文类加载器（双亲委派模型的破坏者）就是很好的选择。
 
@@ -191,6 +191,6 @@ jvm对class文件采用的是按需加载的方式，当需要使用该类时，
 
 ![image.png](https://segmentfault.com/img/bVcHtgL)
 
-- **沙箱安全机制**
+##### **4.3 沙箱安全机制**
 
 自定义 String 类，但是在加载自定义 String 类的时候会率先使用引导类加载器加载，而引导类加载器在加载的过程中会先加载 JDK 自带的文件（rt.jar 包中的 javalangString.class），报错信息说没有 main 方法就是因为加载的 rt.jar 包中的 String 类。这样可以保证对 Java 核心源代码的保护，这就是沙箱安全机制。
