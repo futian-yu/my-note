@@ -311,7 +311,7 @@ jinfo -flag 参数项 进程号
 
 ```java
 //1.java.lang.StackOverflowError
-	jvm栈内存溢出，比如说深度调用方法，不断开辟栈内存。
+	jvm栈内存溢出，比如说深度调用方法，不断开辟栈内存。(局部变量)
 //2.java.lang.OutOfMemoryError:Java heap space
 	堆内存溢出，比如说new大对象就可能会造成。
 //3.java.lang.OutOfMemoryError:GC overhead limit exceeded（垃圾回收上头）
