@@ -2,98 +2,224 @@
 1.说说JVM内存机制.
 	JVM内存机制大致可以分为线程隔离区域(线程安全)和线程共享区域(非线程安全)这两大块。
 	线程隔离区域包含：程序计数器(线程切换时可以找到上次执行字节码的位置)、虚拟机栈(栈,存放堆对象的引用、局部变量,基本类型等)、本地方法栈(类似于虚拟机栈,只是一个服务于java方法,一个服务于Native关键字修饰的本地方法)等。
-	线程共享区域包含：堆区、永久代(jdk1.8)/直接内存(jdk1.8+)。
+	线程共享区域包含：堆区、永久代(jdk1.8)/直接内存(jdk1.8+)/方法区/元空间。
 2.介绍下垃圾收集机制，垃圾收集有哪些算法，各自的特点?
 	四大垃圾回收算法：标记清除、复制、标记整理、分代收集。详情笔记。
 	七大垃圾回收器：(新生代)Serial、ParNew、Parallel Scavenge；(老年代)Serial Old、Parallel Old、CMS；G1
 3.聊聊GC，谈谈Major GC，FullGC区别，垃圾收集器有哪些，他们的区别？
+	Young GC年轻代的GC，Major GC老年代的GC，FullGC是整个堆(包括年轻代和老年代)和方法区/元空间的GC，在方区即元空间空间不足/分配大对象/年轻代每次晋升到老年代对象的平均大小大于老年代剩余空间时触发。
 4.OutOfMemeryError这个错误你遇到过吗？你是怎么解决处理的？
+	除了回答配置、检查代码，还要回答exlipse下的MAT分析工具定位可能产生问题的代码点。
 5.JVM调优有哪些参数，介绍下，线上环境上，你是怎么查看JVM的参数并进行调优的？
+	首先可以用jsp -l查看java运行程序的进程号，然后用jinfo -flags 进程号查看JVM所有配置项（默认+人工配置：Non-default VM flags表示JVM默认参数，Command line表示人工配置参数）。
+	-Xms、-Xmx参数属于XX参数；-Xms = -XX:InitialHeapSize，-Xmx = -XX:MapHeapSize
+	第二种方法：-XX:+PringCommandLineFlags打印命令行参数(这个命令行的好处是可以打印出使用的垃圾收集器)
 6.能不能自己写一个类叫java.lang.String
+	可以，抛弃双亲委派。
 7.新生代分为几个区？使用什么算法进行垃圾回收？为什么使用这个算法？
+	回答过。
 8.JVM老年代和新生代的比例是多少？
+	2:1
 9.讲讲YGC和FGC发生的具体场景？
+	Young GC/Old GC/Full GC
 10.jstack,jmap,jutil分别的意义？如何线上排查JVM的相关问题？
+	jstack 用于查询cpu飙升，线程卡顿。
 11.线上发送频繁full gc如何处理？CPU使用率过高怎么办？
+	频繁full gc用MAT查看分析dump日志。cpu使用率过高查看进程-》确定线程->jstack 查看堆栈信息-》确定代码
 12.知道字节码吗？字节码有哪些？Integer x = 5，int y = 5,比较x=y都经过哪些步骤？
+	.class文件就是字节码文件,类加载过程中的编译就是将java文件加载成class文件。 自动拆箱/装箱，valueOf()
 13.讲讲类加载机制，都有哪些类加载机制？ 这些类加载器都加载哪些文件？
+	类加载机制-双亲委派模型。类加载机制过程：加载->链接(验准析)->初始化->使用->卸载
 14.手写一下类加载Demo。
+	难度高，因为要熟悉类名称。但是过程：自定义类加载器。
 15.请问你做过哪些JVM优化？使用什么方法达到什么效果？
-16.clasforName("java.lang.String")和String classgetClassLoader() LoadClass("java.lang.String")有什么区别呢？
+	需要编造一个场景
+16.classforName("java.lang.String")和String classgetClassLoader() LoadClass("java.lang.String")有什么区别呢？
+	classforName初始化了，类加载器加载只加载并链接，并未初始化。
 17.GC 用什么收集器？收集的过程如何？哪些部分可以作为 GC Root?
+	GC Root:虚拟机栈(帧栈中的本地变量表)中引用的对象、本地方法栈Native(JNI)引用的对象、静态变量\常量引用的对象。
 18. 标记的时候怎么找出栈上的 GC Root？说出一种可能的方案，存在什么问题？
+	weikandong
 19.字节码有了解过吗？
+	java编译->.class字节码文件。也即类加载的第一步-加载。
 20.ParNew 收集过程，如何调优 ParNew？如何减少 full gc？调大 YoungGen 有什么好处坏处？
 21.对象在jvm中是怎么存储的？
 22.jvm内部如何划分？常量池在哪里？
 23.写一小段程序使栈溢出，堆溢出？
+	上手写程序的都有一定难度，需要熟练才行。
 24.CMS过程是怎样的？内部使用什么算法做垃圾回收？
+	CMS-过程，待看。
 25.讲讲分代垃圾回收过程？
+	ok
 26.JVM垃圾回收的时候如何确定垃圾？
+	GC-ROOT不可达的为垃圾
 27.你说你做过JVM调优和参数配置，请问如何查看JVM系统默认值？
+	java -XX:+PrintFlagsInitial（查看jvm未更改的默认参数），java -XX:+PrintFlagsFinal; 不过我用的更多的是jinfo -flags 进程号和 java -XX:+PrintCommandLineFlags打印命令行参数
 28.请谈谈你对OOM的认识.
+	多种OOM，把.dump信息通过MAT工具分析可以分析出。
 29.GC回收算法和垃圾回收器的关系？另外，串行收集/并行收集/并发收集/STW是什么？
+	ok
 30.怎么查看服务器默认的垃圾收集器是哪个？生产上你是如何配置垃圾收集器的？谈谈你的理解。
+	java -XX:+PrintCommandLineFlags。
 31.说说G1垃圾收集器？
+	待看
 32.强引用、软引用、弱引用、虚引用分别是什么？
 33.生产环境服务器变慢，诊断思路和性能评估谈谈？
+	cpu飙升、卡顿的处理方案。
 34.加入生产环境出现cpu占用过高，请谈谈你的分析思路和定位？
+	cpu飙升、卡顿的处理方案。
 35.对于JDK自带的JVM监控和性能分析工具用过哪些？一般你是怎么用的？
+	说一个JDK自带的，外加一个eclipse的MAT.
 36.JVM的字节码指令接触过吗？简单讲讲
+	字节码知道，字节码指令真不知道。
 
 
 二、线程池
 1.创建线程的几种方式？
-2.Wait，sleep分别是谁的方法，他们之间的区别？
+	1.通过继承Thread类，重写run()方法，thread1.start()就会执行run()方法里的内容；
+	2.通过实现Runnable接口创建线程类,比继承Thread类更灵活，线程池也只能加入2、3中创建的线程；
+	3.通过Callable和Future创建线程：实现Callable接口(而Callable接口继承了Runnable接口和Future接口,相当于同时实现了Runnable、Future接口),它重写的的call()方法作为线程的实现体。FutureTask的get()方法可以获得返回值。new Thread(futureTask,"有返回值的线程").start();
+2.Wait，sleep，yield分别是谁的方法，他们之间的区别？
+	1.wait()和notify()/notifyAll()方法都是Object类中的方法，sleep()和yield()都是Thread类中的方法。
+	2.wait/notify方法只能在同步代码块中使用，sleep和yield则没有这个限制。wait是针对一个被同步代码块加锁的对象，而sleep针对的是一个线程,sleep醒来之后不能保证立马获得cpu，它也是进入就绪态。
+	3.wait()方法在进入wait状态的时候，会释对象的放锁，直到被notify唤醒时才会醒来进入就绪态，而sleep不会释放锁。
+	4.thread1.sleep()睡眠的是当前运行的线程，而不是thread1。
+	5.yield不保证当前的线程会暂停或停止，但是可以保证当前线程在调用yield方法时会放弃CPU。没有正在等的线程或者其他线程优先级都比较低，调用yield的线程会继续执行。
+	
 3.讲一讲线程间的通信方式？
+	1.同步（synchronized）,其本质就是“共享内存”式的通信，多个线程需要访问同一个变量，谁拿到了锁，谁就可以执行。
+	2.CAS+自旋锁的方式。while里面的条件的变量要用volatile修饰，保证内存可见性。
+	3.wait/notify机制(Object类中的方法)，但是其执行顺序要注意不能颠倒，否则可能造成线程永远不会被唤醒。
+	
 4.创建线程池的几种方式，线程池有什么好处?
+	1.通过Executors工厂方法创建；
+		1)newCachedThreadPool()(工作队列用的是SynchronousQueue),该方法返回一个可以根据实际情况调整线程池中线程数量的线程池。即该线程中的线程数量不确定，是根据实际情况动态调整的。
+		2)newFixedThreadPool()(工作队列使用的是LinkedBlockingQueue)，该方法返回的是一个固定数量的线程池，线程数量始终不变，不加不减，所以该线程池可以控制线程的最大并发数。
+		3)newScheduledThreadPool(),可以返回一个可以定时执行某任务的线程池。
+		4)newSingleThreadExecutor(),返回单线程池。
+		5)newSingleThreadScheduledExecutor(),单线程池，但是可以调度任务在指定时间执行。
+	
+	2.通过new ThreadPoolExecutor(int corePoolsize,int maximumPoolSize,long keepAliveTime,TimeUuit unit,BlockingQueue<Runnable> workQueue)自定义创建；几大参数含义如下：
+		int corePoolSize,//线程池核心线程大小
+		int maximumPoolSize,//线程池最大线程数量
+		long keepAliveTime,//空闲线程存活时间
+		TimeUnit unit,//空闲线程存活时间单位，一共有七种静态属性(TimeUnit.DAYS天,TimeUnit.HOURS小时,TimeUnit.MINUTES分钟,TimeUnit.SECONDS秒,TimeUnit.MILLISECONDS毫秒,TimeUnit.MICROSECONDS微妙,TimeUnit.NANOSECONDS纳秒)
+		BlockingQueue<Runnable> workQueue,//工作队列
+		ThreadFactory threadFactory,//线程工厂，主要用来创建线程(默认的工厂方法是：Executors.defaultThreadFactory()对线程进行安全检查并命名)
+		RejectedExecutionHandler handler//拒绝策略(默认是：ThreadPoolExecutor.AbortPolicy不执行并抛出异常)
+	用线程池可以提升线程资源的使用率，降低资源的消耗；提高响应速度；提高线程的可管理性。
+	
 5.ArrayBlockingQueue，LinkedBlockingQueue，SynchronousQueue等等阻塞队列的理解?
+	1.ArrayBlockingQueue：基于数组的有界阻塞队列，按 FIFO 排序。(创建线程至核心线程数-->任务放进队列的队尾-->如果队列已满则创建一个新的线程-->如果创建时发现线程数量已经达到maxPoolSize,则执行拒绝策略)
+	2.LinkedBlockingQueue：基于链表的无界阻塞队列（其实最大容量为 Interger.MAX_VALUE），按照 FIFO 排序。
+	3.SynchronousQueue：不缓存任务的阻塞队列，生产者放入一个任务必须要等消费者取出这个任务。
+	
 6.说说ThreadPoolExecutor的7大传入参数及内部工作原理?
+	核心线程数、最大线程数、拒绝策略、空闲线程存活时间、空闲线程存活时间单位、阻塞队列、线程工厂
+	
 7.给你一个具体的业务场景，让你使用ThreadPoolExecutor创建一个适合的线程池.
+	要看任务是cpu密集型还是io密集型。cpu密集型：cpu+1个线程的线程池；io密集型：CPU核数/(1-阻塞系数)，阻塞系数一半在0.8-0.9之间。
+
 8.说一说线程池的拒绝策略？
+	jdk内置的拒绝策略有四种：1)AbortPolicy(默认)不执行并抛出异常；2)直接丢弃任务,不予处理也不抛出异常，如果允许任务丢失，这才是最好的方案；3)不丢不抛，将任务回退给调用者；4)抛弃队列中等待最久的任务。
+
 9.讲讲创建单一的/固定数的/可变的三种线程池的方法，你在工作中用哪个多？
+	工作一般不用Executors创建线程池，因为阿里规约说明了，此种方法创建，可能会造成OOM，可创建的最大线程数为Integer.max。工作中我们一般通过new ThreadPoolExecutor自定义创建。
 10.你在工作中是如何使用线程池的?是否自定义过线程池使用？
+	使用过，是通过new ThreadPoolExector自定义创建线程池。自定义核心线程数、最大线程数、空闲线程存活时间、时间单位、阻塞队列、拒绝策略等。
 11.合理配置线程池你是如何考虑的？
+	这个要看任务是cpu密集型还是io密集型。cpu密集型：cpu核数+1；io密集型：cpu核数/(1-阻塞系数)，阻塞系数一般为0.8-0.9.
 12.单机上一个线程池正在处理服务如果忽然断电怎么办(正在处理和阻塞队列里的请求怎么处理)?
+	我们可以对正在处理和阻塞队列中的任务做持久化处理，当断电或者系统宕机，操作无法继续下去的时候，可以通过回溯日志的方式来撤销正在处理的已经执行成功的操作。然后重新执行整个阻塞队列。
+	（机器宕机的时候，可以后台开启一个线程，扫描未提交和已提交的任务，重新提交线程池中执行。）
 13.使用无界阻塞队列会出现什么问题？
+	OOM
 14.线程池底层数据结构是什么？
+	线程池本质是一个hashSet，多余的任务放在阻塞队列中。阻塞队列满了，才会触发非核心线程的创建，达到maxPoolSize，则执行拒绝策略，否则经过线程空闲时间，非核心线程回收。
 15.HashMap 如果一直 put 元素会怎么样？hashcode 全都相同如何？equals 方法都相同如何？
 
 三、spring框架
+三、spring框架
 1.Spring用了哪些设计模式？
+	比如说工厂模式（BeanFactory、ApplicationContext创建bean对象），代理模式（springAOP），单例模式（Spring解决循环依赖的bean都是默认单例的），适配器模式（Spring Aop的增强或通知（Advice）使用到了适配器模式，SpringMVC的mapping获取对应Controller），装饰者模式(动态切换多数据源)
 2.Spring注入bean的方式？
+	1)通过注解@Autowired/@Resource注入;
+	2)通过set方法注入；
+	3)通过构造器注入；
+	4)通过静态工厂注入(静态方法直接new,需要在xml中配置)；
+	5)通过实例工厂注入(方法内直接new,需要配置xml)
 3.说说对SpringIOC和SpringAOP的理解？
+	springIOC-控制反转/依赖注入，SpringAop-面向切面。控制反转就是在类A中需要用到类B，原先我们是要自己去new，现在我们把这个工作交给了spring去做，在我们调用类A的时候，容器会为我们实例化。注入方式有好几种，bean是通过工厂模式创建的，数据是通过反射注入的。
+	AOP是通过代理实现的。(jdk/cglib)
 4.说说Spring事务隔离级别和传播机制？
+	- 七种传播机制：
+	PROPAGATION_REQUIRED：（存在则加入，不存在则新建）支持当前事务，如果当前没有事务，则新建一个事务，这是spring默认的事务传播属性。
+	PROPAGATION_SUPPORTS：支持当前事务，如果没有事务，则以非事务方式执行。
+	PROPAGATION_MANDATORY：支持当前事务，如果当前没有事务，则抛出异常。
+	PROPAGATION_REQUIRES_NEW：新建事务，如果当前存在事务，把当前事务挂起。
+	PROPAGATION_NOT_SUPPORTED：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。
+	PROPAGATION_NEVER：以非事务方式执行，如果当前存在事务，则抛出异常。
+	PROPAGATION_NESTED：提交要等父事务一块提交。
+	- 四种隔离级别
+	ISOLATION_DEFAULT：PlatfromTransactionManager默认的隔离级别，它使用数据库默认的隔离级别（四种，数据库哪种他就哪种）。
+	
 5.SpringMVC的流程?
-6.spring 一个bean装配的过程（bean的生命周期）？
-7.ApplicationContext 的初始化过程？初始化过程中发现循环依赖 Spring 是如何处理的。
-8.执行某操作，前50次成功，第51次失败a全部回滚b前50次提交第51次抛异常，ab场景分别如何设置Spring（传播性）？
+	用户发送请求至前端控制器DispatcherServlet,然后处理器映射器HandlerMapping根据url找到对应的处理器Controller，Controller执行完返回ModelAndView,DispatcherServlet将其渲染(将模型数据填充至视图中)后返回给前端。
+6.spring 一个bean装配的过程（bean的生命周期）？--->比较长，暂时不知道如何答好。
+7.ApplicationContext 的初始化过程？初始化过程中发现循环依赖 Spring 是如何处理的。---->结合上面一个bean的装配过程一起看看视频，一起总结，不太好答。
+8.执行某操作，前50次成功，第51次失败。a.全部回滚;b前50次提交，第51次抛异常；ab场景分别如何设置Spring（传播性）？
+	a.在循环外的方法加事务,使用默认的隔离级别就行(有则加入,没有则新建)；b.在循环内的方法加事务（事务隔离级别为PROPAGATION_REQUIRES_NEW(不管有没有事务,只用我新建的事务)）。
 
 
 四、GUC
 1.hashMap
-	1)讲讲hashMap底层原理
+	1)讲讲hashMap底层原理?
+		hashMap底层是数组加链表的结构。 首先hashCode算出具体bucket的位置，然后再通过链表的数据结构赋值。
 	2)jdk1.7版本和1.8版本的HashMap的区别?
+		最重要的一点是底层结构不一样，1.8引入了红黑树(数组+链表+红黑树),当bucket中元素大于等于7就转化为红黑树,小于7还原为链表。
+		1.7采用头插法，1.8采用尾插法;
+		1.7对哈希值的计算直接使用hashCode值,1.8则是采用key的hashCode异或上key的hashCode进行无符号右移16位的结果,避免了只靠低位数据来计算哈希值时导致的冲突,计算结果由高低位结合决定,使元素分布更均匀。
 	3)HashMap能不能排序？HashMap的长度为什么要是2的幂次方？
+		取模运算中如果除数是2的幂次方则等价于 其与除数减一的&操作，就是：hash % length == hash & (length - 1),采用二进制位操作 & 相对于 % 能够提高运算效率，这也就解释了为啥HashMap的长度需要为2的幂次方
 	4)HashMap在什么情况下会扩容，或者有哪些操作会导致扩容？
+		HashMap是无序的，要想排序可以用TreeMap。
 	5)HashMap push方法的执行过程？
+		先对key计算hashCode，hash&(length - 1)计算出下标其位置,如果索引位置的值为空则直接赋值，如果不为空则是产生了hash碰撞，此时1.7采用头插法，1.8采用尾插法(过长还有链表与红黑树之间的转换)。
+		如果已经有该key，putVal()方法返回该key对应的value旧值；没有该key则返回null。
 	6)HashMap检测到hash冲突后，将元素插入在链表的末尾还是开头？
+		1.7头插法，1.8尾插法。
 	7)1.8还采用了红黑树，讲讲红黑树的特性，为什么人家一定要用红黑树而不是AVL、B树之类的？
+		红黑树是特殊的二叉查找树，在AVL树中，从根到任何叶子的最短路径和最长路径之间的差异最多为1。在红黑树中，差异可以是2倍。
+		所以他们各有优点，平衡二叉查找树查找更快，但是这个快是建立在更多次的旋转之上的，也就是说，如果是查找为主导的话，使用AVL更好。如果插入删除比较频繁，那么红黑树更合适。
 	8）JDK 1.8 ConcurrentHashMap 做过什么改进？HashMap 死锁知道嘛？
-
+		主要做了以下两方面的改进：将原来的对segments分段加锁改为CAS+synchronized来保证并发的安全性； 与1.8的hashmap一样,引入了红黑树,加快了查询遍历的效率。
 2.ConcurrentHashMap
 	1)讲讲ConcurrentHashMap底层原理？
+		jdk1.7中是ReentrantLock+Segment+HashEntry(+链表)
+		jdk1.8中是CAS+Synchronized+Node+红黑树。随着jdk版本的迭代，sychronize变得越来越轻了，效率也不差了。
 	2)为什么要先初始化segments[0]?
-	
+		初始化一个segment，直接使用Segments[0]的属性，这就是为什么在构造方法中初始化Segments[0]的原因
 3.说说ArrayList、Map、Set底层原理，它们线程安全吗？要是线程不安全该如何解决呢？
+	ArrayList底层是数组，Set底层是唯一无序的集合(和List一样继承自Collection接口)，Map底层是键值对。他们线程不安全，要线程安全可以用。
+	解决方法：1.使用Collections.synchronizedList(new ArrayList<>())-->它是在方法体内加锁, 2.使用JUC包下的CopyOnWriteArrayList类(采用写时赋值技术)。
 4.Synchronized、Lock、ReentrantLock的区别，他们的用法及原理?
+	首先synchronized是可重入锁，ReentrantLock可指定但默认是可重入，synchronized是jvm实现的，ReentrantLock是JDK实现的(jvm源码比较难看到,jdk可以直接点进去看到)。原本synchronized效率较差，但是优化后引入了偏向锁、轻量级锁(自旋锁)后现在效率已经不错了。
+	锁的细度和灵活度明显ReentrantLock更好，但是要记得解锁。
+	ReentrantLock提供了一个Condition(条件)类，可以实现分组唤醒需要唤醒的线程们。而synchronized要么随机唤醒一个线程要么唤醒全部线程。
 5.ThreadLocal的用法和原理，底层如何实现? 
+	ThreadLocal是一个线程内部的存储类(该线程的其他地方都可以获取，我写的是存userId)，各个线程的变量读取是相互独立的，使用的时候注意内存泄漏的情况。
 6.Volatile关键字的作用和原理？
+	保证可见性、禁止重排序。不能保证并发安全。
 7.CAS是什么及底层原理？ 
+	比较并交换，底层是自旋锁+Unsafe类。
 8.分布式环境下，怎么保证线程安全?
+	分布式锁，redis锁重点研究。两阶段提交，用消息中间件等。
 9.讲一讲AtomicInteger，为什么要用CAS而不是synchronized？
+	Synchronized是只允许一个线程运行，虽然一致性保证了，但是降低并发性，而cas底层是unsafe，并且不加锁，保证一致性，允许多个线程同时操作，并发量得到保障，但是循环比较。
 10.synchronized什么时候是对象锁，什么时候是全局锁，为什么？
+	加在类里非静态变量、this、方法上，都是对象锁。加在静态变量、静态方法、xxx.class上，都是类锁。
 11.并发包里的原子类有哪些，怎么实现？cas 在 CPU 级别用什么指令实现的？
+	有AtomicInteger、AtomicLong、AtomicReference等。基于CAS,依赖Unsave类的一些底层能力。cas底层操作系统级别的指令还真不知道。
 
 
 五、mysql
@@ -186,5 +312,6 @@
 	34.http 默认端口，https 默认端口
 	35.DNS 你知道是干嘛的吗？
 	36.git rebase 和 merge 有什么区别？
+
 	
 	

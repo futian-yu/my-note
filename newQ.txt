@@ -55,13 +55,24 @@ https://www.cnblogs.com/dolphin0520/p/3780005.html
 ===============================================
 蚂蚁花呗一面（一个小时）：
 1.Java容器有哪些？哪些是同步容器，哪些是并发容器？	（https://blog.csdn.net/weixin_41884118/article/details/88054094）
+	Collection接口为所有容器的顶端接口，下面有list、set、map；Vector、Stack、HashTable、Collections.synchronized()是同步容器,ConcurrentHashMap、写实复制各个类是并发容器。
 2.ArrayList和LinkedList的插入和访问的时间复杂度？	（https://www.jianshu.com/p/9fdfa125c00e）
 3.java反射原理，注解原理？ （https://zhuanlan.zhihu.com/p/58793884；https://cloud.tencent.com/developer/article/1522675）
+	反射原理：类第一次使用时，会动态加载到JVM中。一旦你一个类的Class对象被加载到内存，它便可以被用来创建这个类的所有对象和成员变量。这就是反射的基础。
+	注解原理：从java源码到class字节码是由编译器完成的，而注解也是在编译时由编译器进行处理，编译器会对注解符号处理并附加到class/方法/属性结构中。
+			其实注解被编译后就是一个继承Annotation接口的接口，所以@Test其实就是public interface Test extends Annotation.当我们通过AnnotationTest.class.getAnnotation(Test.class)
+			时，JDK会通过动态代理生成一个实现了Test接口的对象，并将注解对象设置进此对象中，通过他的value()方法就可以获取到注解值。
 4.新生代分为几个区？使用什么算法进行垃圾回收？为什么使用这个算法？
+	eden,s0,s1,serial，parNew,Parallel算法；吞吐量优先，新生代使用复制算法（90%朝生夕死，所以可以采用复制算法，10%的s0,10%de s1即可，且无碎片）。
 5.HashMap在什么情况下会扩容，或者有哪些操作会导致扩容？	笔记
+	先进行hashCode() & (length-1)算出index，然后看桶是否为空，空则直接插入，非空则遍历比较该元素key的hashCode是否与要插入的相同，相同则equals比较，如果还是相同，则覆盖该位置的values值。否则新建一个Node节点，头插(1.7)/尾插(1.8);
 6.HashMap push方法的执行过程？	笔记
+	先进行hashCode() & (length-1)算出index，然后看桶是否为空，空则直接插入，非空则遍历比较该元素key的hashCode是否与要插入的相同，相同则equals比较，如果还是相同，则覆盖该位置的values值。否则新建一个Node节点，头插(1.7)/尾插(1.8);
 7.HashMap检测到hash冲突后，将元素插入在链表的末尾还是开头？	笔记
 8.1.8还采用了红黑树，讲讲红黑树的特性，为什么人家一定要用红黑树而不是AVL、B树之类的？（了解平衡二叉树、红黑树、B树、B+树）
+	AVL树更加严格平衡，因此可以提供更快的查找效果。所以，对于查找密集型任务，适合用AVL树。
+	对于插入密集型任务，红黑树更加适合。因为插入经常会导致树的旋转，AVL树的旋转比红黑树更加频繁和难以实现。
+	B树又太胖了，查找效率低，并且会导致同一个桶中显得非常臃肿。
 9.https和http区别，有没有用过其他安全传输手段？(https://www.runoob.com/w3cnote/http-vs-https.html)
 10.线程池的工作原理，几个重要参数，然后给了具体几个参数分析线程池会怎么做，最后问阻塞队列的作用是什么？
 11.linux怎么查看系统负载情况？(笔记)
