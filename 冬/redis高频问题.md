@@ -56,6 +56,7 @@ redis的key都是string的类型，value有五种。
 
 //7.redis集群模式的核心原理？
 
+//8.reids核心数据结构 - String的动态扩容机制？
 
 
 
