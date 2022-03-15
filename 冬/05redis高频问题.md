@@ -105,10 +105,13 @@ redis的key都是string的类型，value有五种。
 	https://www.cnblogs.com/linqiaobao/p/13378831.html
 
 //21.mysql里有2000w数据，redis中只有20w的数据，如何保证redis中的数据都是热点数据？
-
+	https://zhuanlan.zhihu.com/p/260833627
+	
 //22.redis的内存用完了会发生什么？
+	内存淘汰策略。
 
 //23.redis如何做内存优化？
+	https://www.jianshu.com/p/16648f0a1abc
 
 //24.说说redis的内存模型？
 

@@ -15,7 +15,7 @@ esc+:+wq #保存并退出,若想不保存推出,esc + : + q!
 cp a.txt b.txt  #在当前文件夹下将a.txt复制一份并重命名为b.txt
 mv a.txt b.txt	#将a.txt重命名为b.txt
 find . -name yufutian.txt #全局查找文件名为a.txt的文件的路径,若*futian*也可模糊匹配
-
+ls -l /proc/xxxx/cwd
 
 ##===================快捷键
 Ctrl+c #在命令行下起着终止当前执行程序的作用
