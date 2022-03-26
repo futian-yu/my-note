@@ -29,12 +29,23 @@ synchronized在1.7之前是重量级锁，1.8之后已经越来越轻量化了�
 
 //5.比较jdk1.7和jdk1.8中synchronized锁的区别？
 
+//6.HashMap内部数据结构？ConcurrentHashMap分段锁？
 
+//7.jdk1.8中，对hashMap和concurrentHashMap做了哪些优化?
 
+//8.如何解决hash冲突的，以及如果冲突了，怎么在hash表中找到目标值?
 
+//9.synchronized 和 ReentranLock的区别？
 
+//10.ThreadLocal？应用场景？
 
+//11.线程池用过哪些？线程池有哪些参数？然后问几个常用线程池的用法和实际场景？
 
+//12.说一下aqs是怎么阻塞线程的
 
+//13.并发包了解吗？假如几个线程之间相互等待，可以用哪个并发类来实现，他的原理是什么？
+
+//14.hashmap了解吗？他的set和get的时间复杂度是多少？为什么是O(1),说下详细过程，hashmap是线程安全的吗？
 ```
 
+![1647452115520](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1647452115520.png)

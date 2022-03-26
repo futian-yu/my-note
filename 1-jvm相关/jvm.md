@@ -36,6 +36,7 @@
 //1.age=20是因为main里的age在栈里,传给外部方法只是传了一个副本；
 //2.xxx是因为main里面的对象指向abc,传给外部方法传的是引用，两个都指向同一个堆内存地址“abc”,且外部方法将其改为xxx了，因为两个引用指向的是同一个地址，所以main里面的person对象指向地址的值也为xxx了;
 //3.main里的str先去常量池检查有没有abc，没有则创建一个“abc”，在堆中。str指向它，这时候把str引用作为参数传给外部方法，外部方法的引用也指向abc，但是方法内部又检查或创建了一个“xxx”,并且此时外部方法的引用str指向xxx，但是main内部的str引用还是指向abc不变的.
+//讲解：https://www.bilibili.com/video/BV1zb411M7NQ?p=24
 ```
 
 ![](./images/21.jpg)
