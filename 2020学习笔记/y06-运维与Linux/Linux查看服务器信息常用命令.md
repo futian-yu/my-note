@@ -40,6 +40,7 @@ PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
 
 ```
 cat /proc/meminfo
+free -g   #看total可以看到linux内存总大小，GB表示
 ```
 
 ![image-20210203210356422](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210203210356422.png)
