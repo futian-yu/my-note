@@ -59,7 +59,8 @@ git cherry-pick 62ecb3：挑拣develop的62ecb3提交到test分支(62ecb3是deve
 
 	========================================================
 	git reset HEAD readme.txt  :将readme.txt从暂存区移出，恢复到工作区；
-	git reset --hard HEAD^ : 回退到上一个版本（也可以用指定版本代替HEAD^）
+	git reset --hard HEAD^ : 回退到上一个版本（也可以用指定版本代替HEAD^）;
+	git reset --hard [commit] : 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定    	commit一致。
 	git reset --soft HEAD^ ：撤销了commit操作，但是写的代码依然保留(用于不小心commit);
 		git log:查看版本库的状态；
 		git reflog:记录你的每一次命令;

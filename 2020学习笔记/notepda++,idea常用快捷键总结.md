@@ -102,3 +102,15 @@ ctrl+p ：根据文件名搜索文件
 
 ctrl + p : 打印快捷键(弹出打印设置界面) 
 
+ctrl + D: 调出字体栏，选择字体。
+
+ctrl + shift + c/v：拷贝/黏贴格式，类似于格式刷。
+
+ctrl + L左对齐，ctrl + R右对齐，ctrl + E 居中。
+
+ctrl + Y：撤销ctrl + z的撤销；
+
+
+
+
+
